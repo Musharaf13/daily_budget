@@ -9,10 +9,21 @@ class Login extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 120,
+              ),
+              Image.asset(
+                "assets/images/splash_screen.png",
+                height: 200,
+                width: 200,
+              ),
+              SizedBox(
+                height: 30,
+              ),
               CustomTextField(
                 controller: new TextEditingController(),
                 hintText: "Email",
