@@ -1,6 +1,9 @@
 import 'package:daily_budget/global_widget/custom_button.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
+
+import '../../routes/app_routes.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -43,7 +46,11 @@ class Login extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                CustomButton(title: "Login", onTap: () {}),
+                CustomButton(
+                    title: "Login",
+                    onTap: () {
+                      Get.offAllNamed(Routes.homeScreen);
+                    }),
                 SizedBox(
                   height: 5,
                 ),
