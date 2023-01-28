@@ -4,8 +4,6 @@ import 'package:daily_budget/constants/colors.dart';
 import 'package:daily_budget/constants/typography.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});

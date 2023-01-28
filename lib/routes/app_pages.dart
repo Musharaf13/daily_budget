@@ -4,6 +4,8 @@ import 'package:get/route_manager.dart';
 import '../screens/home/home.dart';
 import '../screens/home/home_binding.dart';
 import '../screens/login/login.dart';
+import '../screens/navigation/navigation.dart';
+import '../screens/navigation/navigation_bindinig.dart';
 import 'app_routes.dart';
 
 abstract class AppPages {
@@ -12,5 +14,9 @@ abstract class AppPages {
         name: Routes.loginScreen, page: () => Login(), binding: LoginBinding()),
     GetPage(
         name: Routes.homeScreen, page: () => Home(), binding: HomeBinding()),
+    GetPage(
+        name: Routes.navigationScreen,
+        page: () => Navigation(),
+        binding: NavigationBinding()),
   ];
 }

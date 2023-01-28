@@ -16,10 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          ),
+        primarySwatch: Colors.cyan,
+      ),
       getPages: AppPages.pages,
       initialRoute: Routes.loginScreen,
     );

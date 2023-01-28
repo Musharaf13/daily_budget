@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                 CustomButton(
                     title: "Login",
                     onTap: () {
-                      Get.offAllNamed(Routes.homeScreen);
+                      Get.offAllNamed(Routes.navigationScreen);
                     }),
                 SizedBox(
                   height: 5,
