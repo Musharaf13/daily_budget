@@ -68,7 +68,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
       // style: widget.style,
       readOnly: widget.isEnable,
       onChanged: widget.onChanged,
-
       decoration: InputDecoration(
         hintText: widget.hintText,
         // prefixIconConstraints: BoxConstraints.loose(Size(30, 10)),

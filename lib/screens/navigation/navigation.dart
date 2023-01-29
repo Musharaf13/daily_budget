@@ -1,3 +1,4 @@
+import 'package:daily_budget/screens/history/history.dart';
 import 'package:daily_budget/screens/home/home.dart';
 import 'package:daily_budget/screens/navigation/navigation_controller.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +9,7 @@ class Navigation extends GetView<NavigationController> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
-    Text(
-      'Index 1: Business',
-      // style: optionStyle,
-    ),
+    History(),
     Text(
       'Index 2: School',
       // style: optionStyle,
