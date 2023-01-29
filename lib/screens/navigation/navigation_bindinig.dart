@@ -7,9 +7,17 @@ import 'navigation_controller.dart';
 class NavigationBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(NavigationController(), permanent: true);
-    Get.put(HomeController(), permanent: true);
-    Get.put(HistoryController(), permanent: true);
-    Get.put(SettingsController(), permanent: true);
+    Get.put(
+      NavigationController(),
+    );
+    Get.put(
+      HomeController(),
+    );
+    Get.put(
+      HistoryController(),
+    );
+    Get.put(
+      SettingsController(),
+    );
   }
 }
