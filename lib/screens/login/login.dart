@@ -58,7 +58,11 @@ class Login extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("New here?"),
-                    TextButton(onPressed: () {}, child: Text("Sign up")),
+                    TextButton(
+                        onPressed: () {
+                          Get.toNamed(Routes.signUpScreen);
+                        },
+                        child: Text("Sign up")),
                   ],
                 ),
               ],

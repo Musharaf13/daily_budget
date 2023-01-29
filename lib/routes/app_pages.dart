@@ -1,4 +1,6 @@
 import 'package:daily_budget/screens/login/login_binding.dart';
+import 'package:daily_budget/screens/sign_up/sign_up.dart';
+import 'package:daily_budget/screens/sign_up/sign_up_binding.dart';
 import 'package:get/route_manager.dart';
 
 import '../screens/home/home.dart';
@@ -19,5 +21,9 @@ abstract class AppPages {
         name: Routes.navigationScreen,
         page: () => Navigation(),
         binding: NavigationBinding()),
+    GetPage(
+        name: Routes.signUpScreen,
+        page: () => SignUp(),
+        binding: SignUpBinding())
   ];
 }
