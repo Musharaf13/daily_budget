@@ -59,7 +59,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       // enabled: widget.isEnable,
-      // maxLines: widget.maxLines,
+      maxLines: widget.obscureText ? 1 : widget.maxLines,
       validator: widget.validator,
       controller: widget.controller,
       obscureText: _passwordVisible,
@@ -72,10 +72,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         // prefixIconConstraints: BoxConstraints.loose(Size(30, 10)),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.only(top: 0.0, left: 3),
-          child: widget.prefix,
-        ),
+        prefixIcon: widget.prefix != null
+            ? Padding(
+                padding: const EdgeInsets.only(top: 0.0, left: 3),
+                child: widget.prefix,
+              )
+            : null,
         contentPadding:
             EdgeInsets.symmetric(horizontal: 8, vertical: widget.height),
         isDense: true,
