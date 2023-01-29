@@ -17,7 +17,7 @@ const Color cRed = Color.fromARGB(184, 236, 28, 0);
 // Rest of the App Default color pallet (change colors but structure should be maintained.)
 const Color primary = Color(0xff008AA3);
 const Color primaryLight = Color(0xffDFFBFF);
-const Color secondary = Color(0xff1DB9FE);
+const Color secondary = Colors.cyan;
 const Color tertiary = Color(0xffF2F2F2);
 const Color lightBlue = Color(0xffE3EFFF);
 const Color kLinkColor = Color.fromARGB(255, 4, 134, 214);

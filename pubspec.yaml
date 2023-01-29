@@ -38,6 +38,7 @@ dependencies:
   get: ^4.6.5
   fl_chart: ^0.60.0
   syncfusion_flutter_datepicker: ^20.4.44
+  chips_choice: ^3.0.0
 
 dev_dependencies:
   flutter_test:

@@ -18,6 +18,7 @@ class CustomTextField extends StatefulWidget {
     this.isEnable = false,
     this.onConfirmPress,
     this.isEditBox = false,
+    this.onTap,
     this.prefix,
     this.onChanged,
     this.maxLines,
@@ -39,6 +40,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String)? onChanged;
   final Widget? prefix;
   final int? maxLines;
+  final void Function()? onTap;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -58,6 +60,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: widget.onTap,
       // enabled: widget.isEnable,
       maxLines: widget.obscureText ? 1 : widget.maxLines,
       validator: widget.validator,
