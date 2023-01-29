@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 
+import '../../global_widget/mini_expenditure_tile.dart';
+
 class Home extends GetView<HomeController> {
   const Home({super.key});
 
@@ -200,22 +202,3 @@ SideTitles get _leftTile => SideTitles(
         );
       },
     );
-
-class MiniExpenditureTitle extends StatelessWidget {
-  const MiniExpenditureTitle({
-    required this.title,
-    required this.value,
-    Key? key,
-  }) : super(key: key);
-  final String title, value;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text(title), Text("Rs. " + value)],
-      ),
-    );
-  }
-}
