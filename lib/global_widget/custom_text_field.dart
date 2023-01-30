@@ -22,6 +22,7 @@ class CustomTextField extends StatefulWidget {
     this.prefix,
     this.onChanged,
     this.maxLines,
+    this.showHelperText=false,
     Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -41,6 +42,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? prefix;
   final int? maxLines;
   final void Function()? onTap;
+  final bool showHelperText;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -84,10 +86,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
             EdgeInsets.symmetric(horizontal: 8, vertical: widget.height),
         isDense: true,
         // isCollapsed: true,
-        // label: Text(
-        //   widget.hintText,
-        //   style: widget.upperHintStyle,
-        // ),
+        label: widget.showHelperText
+            ? Text(
+                widget.hintText,
+                // style: ,
+              )
+            : null,
         border: OutlineInputBorder(borderSide: BorderSide(color: primary)),
         enabledBorder:
             OutlineInputBorder(borderSide: BorderSide(color: primary)),

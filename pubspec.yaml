@@ -41,6 +41,8 @@ dependencies:
   chips_choice: ^3.0.0
   intl: ^0.18.0
   im_stepper: ^1.0.1+1
+  intl_phone_field: ^3.1.0
+  pinput: ^2.2.21
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +73,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/splash_screen.png
+    - assets/images/savings.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
