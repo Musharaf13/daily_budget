@@ -1,11 +1,14 @@
 import 'package:daily_budget/global_widget/custom_button.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
 
 import '../../routes/app_routes.dart';
+import 'login_controller.dart';
 
-class Login extends StatelessWidget {
+class Login extends GetView<LoginController> {
   const Login({super.key});
 
   @override
@@ -30,15 +33,16 @@ class Login extends StatelessWidget {
                   height: 30,
                 ),
                 CustomTextField(
-                  controller: new TextEditingController(),
+                  controller: controller.emailController,
                   hintText: "Email",
                   prefix: Icon(Icons.email),
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 CustomTextField(
-                  controller: new TextEditingController(),
+                  controller: controller.passwordController,
                   hintText: "Password",
                   prefix: Icon(Icons.password_outlined),
                   obscureText: true,
@@ -46,10 +50,19 @@ class Login extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
+                GetBuilder<LoginController>(
+                    builder: (_) => controller.isUserLogging
+                        ? Column(
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(height: 20),
+                            ],
+                          )
+                        : Container()),
                 CustomButton(
                     title: "Login",
                     onTap: () {
-                      Get.offAllNamed(Routes.navigationScreen);
+                      controller.login();
                     }),
                 SizedBox(
                   height: 5,
@@ -60,6 +73,7 @@ class Login extends StatelessWidget {
                     Text("New here?"),
                     TextButton(
                         onPressed: () {
+                          // controller.login();
                           Get.toNamed(Routes.signUpScreen);
                         },
                         child: Text("Sign up")),

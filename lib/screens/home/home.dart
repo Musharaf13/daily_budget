@@ -8,7 +8,6 @@ import 'package:daily_budget/global_widget/custom_drop_down.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:daily_budget/screens/home/home_controller.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
@@ -67,20 +66,23 @@ class Home extends GetView<HomeController> {
                 SizedBox(
                   height: 30,
                 ),
-                AspectRatio(
-                  aspectRatio: 1.3,
-                  child: BarChart(
-                    BarChartData(
-                      barGroups: _chartGroups(),
-                      borderData: FlBorderData(border: Border.all()),
-                      gridData: FlGridData(show: false),
-                      titlesData: FlTitlesData(
-                        bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-                        leftTitles: AxisTitles(sideTitles: _leftTile),
-                        topTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
-                        rightTitles: AxisTitles(
-                            sideTitles: SideTitles(showTitles: false)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: AspectRatio(
+                    aspectRatio: 1.3,
+                    child: BarChart(
+                      BarChartData(
+                        barGroups: _chartGroups(),
+                        borderData: FlBorderData(border: Border.all()),
+                        gridData: FlGridData(show: false),
+                        titlesData: FlTitlesData(
+                          bottomTitles: AxisTitles(sideTitles: _bottomTitles),
+                          leftTitles: AxisTitles(sideTitles: _leftTile),
+                          topTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                          rightTitles: AxisTitles(
+                              sideTitles: SideTitles(showTitles: false)),
+                        ),
                       ),
                     ),
                   ),

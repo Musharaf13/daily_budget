@@ -14,7 +14,7 @@ import '../../routes/app_routes.dart';
 
 class SignUp extends GetView<SignUpController> {
   SignUp({super.key});
-  static final pinController = TextEditingController();
+  // static final pinController = TextEditingController();
   static final focusNode = FocusNode();
   // final formKey = GlobalKey<FormState>();
 
@@ -39,7 +39,7 @@ class SignUp extends GetView<SignUpController> {
     ConfirmEmailPassword(),
     EnterPhoneNumber(),
     AddOTP(
-        pinController: pinController,
+        // pinController: controller.otpController,
         focusNode: focusNode,
         defaultPinTheme: defaultPinTheme,
         focusedBorderColor: focusedBorderColor,
@@ -88,11 +88,25 @@ class SignUp extends GetView<SignUpController> {
                 CustomButton(
                     title: "Continue",
                     onTap: () {
-                      if (controller.selectedStep < 3) {
-                        controller.selectedStep = controller.selectedStep + 1;
-                      } else {
-                        Get.offAllNamed(Routes.navigationScreen);
-                        controller.selectedStep = 0;
+                      if (controller.validateEmailPass) {
+                        if (controller.selectedStep < 3) {
+                          debugPrint(
+                              "current step: ${controller.selectedStep}");
+                          if (controller.selectedStep == 1) {
+                            controller.generateOTP();
+                            controller.selectedStep =
+                                controller.selectedStep + 1;
+                          } else if (controller.selectedStep == 2 &&
+                              controller.otpController.text !=
+                                  controller.receivedCode) {
+                          } else {
+                            controller.selectedStep =
+                                controller.selectedStep + 1;
+                          }
+                        } else {
+                          Get.offAllNamed(Routes.navigationScreen);
+                          controller.selectedStep = 0;
+                        }
                       }
                     })
               ],
@@ -129,17 +143,15 @@ class WelcomeStep extends StatelessWidget {
   }
 }
 
-class AddOTP extends StatelessWidget {
+class AddOTP extends GetView<SignUpController> {
   const AddOTP({
     Key? key,
-    required this.pinController,
     required this.focusNode,
     required this.defaultPinTheme,
     required this.focusedBorderColor,
     required this.fillColor,
   }) : super(key: key);
 
-  final TextEditingController pinController;
   final FocusNode focusNode;
   final PinTheme defaultPinTheme;
   final Color focusedBorderColor;
@@ -157,52 +169,61 @@ class AddOTP extends StatelessWidget {
         SizedBox(
           height: 100,
         ),
-        Pinput(
-          controller: pinController,
-          focusNode: focusNode,
-          androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
-          listenForMultipleSmsOnAndroid: true,
-          defaultPinTheme: defaultPinTheme,
-          validator: (value) {
-            return value == '2222' ? null : 'Pin is incorrect';
-          },
-          onClipboardFound: (value) {
-            debugPrint('onClipboardFound: $value');
-            pinController.setText(value);
-          },
-          hapticFeedbackType: HapticFeedbackType.lightImpact,
-          onCompleted: (pin) {
-            debugPrint('onCompleted: $pin');
-          },
-          onChanged: (value) {
-            debugPrint('onChanged: $value');
-          },
-          cursor: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 9),
-                width: 22,
-                height: 1,
-                color: focusedBorderColor,
+        Form(
+          key: controller.otpFormKey,
+          child: Pinput(
+            controller: controller.otpController,
+            focusNode: focusNode,
+            androidSmsAutofillMethod:
+                AndroidSmsAutofillMethod.smsUserConsentApi,
+            listenForMultipleSmsOnAndroid: true,
+            defaultPinTheme: defaultPinTheme,
+            validator: (value) {
+              debugPrint("value: ${value}");
+              debugPrint("receivedCode: ${controller.receivedCode}");
+              debugPrint("${value == controller.receivedCode}");
+              return value == controller.receivedCode
+                  ? null
+                  : 'Pin is incorrect';
+            },
+            onClipboardFound: (value) {
+              debugPrint('onClipboardFound: $value');
+              controller.otpController.setText(value);
+            },
+            hapticFeedbackType: HapticFeedbackType.lightImpact,
+            onCompleted: (pin) {
+              debugPrint('onCompleted: $pin');
+            },
+            onChanged: (value) {
+              debugPrint('onChanged: $value');
+            },
+            cursor: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 9),
+                  width: 22,
+                  height: 1,
+                  color: focusedBorderColor,
+                ),
+              ],
+            ),
+            focusedPinTheme: defaultPinTheme.copyWith(
+              decoration: defaultPinTheme.decoration!.copyWith(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: focusedBorderColor),
               ),
-            ],
-          ),
-          focusedPinTheme: defaultPinTheme.copyWith(
-            decoration: defaultPinTheme.decoration!.copyWith(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: focusedBorderColor),
             ),
-          ),
-          submittedPinTheme: defaultPinTheme.copyWith(
-            decoration: defaultPinTheme.decoration!.copyWith(
-              color: fillColor,
-              borderRadius: BorderRadius.circular(19),
-              border: Border.all(color: focusedBorderColor),
+            submittedPinTheme: defaultPinTheme.copyWith(
+              decoration: defaultPinTheme.decoration!.copyWith(
+                color: fillColor,
+                borderRadius: BorderRadius.circular(19),
+                border: Border.all(color: focusedBorderColor),
+              ),
             ),
-          ),
-          errorPinTheme: defaultPinTheme.copyBorderWith(
-            border: Border.all(color: Colors.redAccent),
+            errorPinTheme: defaultPinTheme.copyBorderWith(
+              border: Border.all(color: Colors.redAccent),
+            ),
           ),
         ),
       ],
@@ -210,7 +231,7 @@ class AddOTP extends StatelessWidget {
   }
 }
 
-class EnterPhoneNumber extends StatelessWidget {
+class EnterPhoneNumber extends GetView<SignUpController> {
   const EnterPhoneNumber({
     Key? key,
   }) : super(key: key);
@@ -229,17 +250,23 @@ class EnterPhoneNumber extends StatelessWidget {
         SizedBox(
           height: 80,
         ),
-        IntlPhoneField(
-          decoration: InputDecoration(
-            labelText: 'Phone Number',
-            border: OutlineInputBorder(
-              borderSide: BorderSide(),
+        Form(
+          key: controller.phoneFormKey,
+          child: IntlPhoneField(
+            controller: controller.phoneNumberController,
+            autovalidateMode: AutovalidateMode.disabled,
+            validator: controller.phoneNumberValidator,
+            decoration: InputDecoration(
+              labelText: 'Phone Number',
+              border: OutlineInputBorder(
+                borderSide: BorderSide(),
+              ),
             ),
+            initialCountryCode: 'PK',
+            onChanged: (phone) {
+              print(phone.completeNumber);
+            },
           ),
-          initialCountryCode: 'PK',
-          onChanged: (phone) {
-            print(phone.completeNumber);
-          },
         ),
         SizedBox(
           height: 50,
@@ -249,55 +276,62 @@ class EnterPhoneNumber extends StatelessWidget {
   }
 }
 
-class ConfirmEmailPassword extends StatelessWidget {
+class ConfirmEmailPassword extends GetView<SignUpController> {
   const ConfirmEmailPassword({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 50,
-        ),
-        Text(
-          "On Boarding You",
-          style: heading1TextStyle,
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        CustomTextField(
-          controller: TextEditingController(),
-          hintText: "Enter Email",
-          showHelperText: true,
-          prefix: Icon(Icons.email),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        CustomTextField(
-          controller: TextEditingController(),
-          hintText: "Enter Password",
-          showHelperText: true,
-          prefix: Icon(Icons.password),
-          obscureText: true,
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        CustomTextField(
-          controller: TextEditingController(),
-          hintText: "Confirm Password",
-          showHelperText: true,
-          prefix: Icon(Icons.confirmation_number),
-          obscureText: true,
-        ),
-        SizedBox(
-          height: 30,
-        ),
-      ],
+    return Form(
+      key: controller.emailPasswordFormkey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            "On Boarding You",
+            style: heading1TextStyle,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            controller: controller.emailController,
+            hintText: "Enter Email",
+            showHelperText: true,
+            prefix: Icon(Icons.email),
+            keyboardType: TextInputType.emailAddress,
+            validator: controller.emailValidator,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            controller: controller.passwordController,
+            hintText: "Enter Password",
+            showHelperText: true,
+            prefix: Icon(Icons.password),
+            obscureText: true,
+            validator: controller.passwordValidator,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            controller: controller.confirmPasswordController,
+            hintText: "Confirm Password",
+            showHelperText: true,
+            prefix: Icon(Icons.confirmation_number),
+            obscureText: true,
+            validator: controller.confirmPasswordValidator,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
     );
   }
 }
