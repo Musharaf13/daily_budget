@@ -6,9 +6,11 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
+import '../../data/providers/signup_provider.dart';
 import '../../routes/app_routes.dart';
 
 class SignUpController extends GetxController {
+  final SignupProvider provider = SignupProvider();
   final GlobalKey<FormState> emailPasswordFormkey = GlobalKey<FormState>();
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
@@ -19,6 +21,13 @@ class SignUpController extends GetxController {
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
   String receivedCode = "";
+
+  bool _isSigningUp = false;
+  bool get isSigningUp => _isSigningUp;
+  set isSigningUp(value) {
+    _isSigningUp = value;
+    update();
+  }
 
   int _selectedStep = 0;
   int get selectedStep => _selectedStep;
@@ -69,7 +78,17 @@ class SignUpController extends GetxController {
   FutureOr<String?> phoneNumberValidator(PhoneNumber? value) async =>
       value!.number.length < 13 ? "Invalid Phone number" : null;
 
-  void validateForm() {
+  Future signup() async {
+    isSigningUp = true;
+    String phoneNumber = phoneNumberController.text.substring(1);
+    await provider.signup(
+        email: emailController.text,
+        password: passwordController.text,
+        phoneNumber: phoneNumber);
+    isSigningUp = false;
+  }
+
+  void validateForm() async {
     switch (selectedStep) {
       case 0:
         if (emailPasswordFormkey.currentState!.validate())
@@ -82,8 +101,10 @@ class SignUpController extends GetxController {
         }
         break;
       case 2:
-        if (otpFormKey.currentState!.validate())
+        if (otpFormKey.currentState!.validate()) {
+          await signup();
           selectedStep = selectedStep + 1;
+        }
         break;
       default:
         Get.offAllNamed(Routes.navigationScreen);

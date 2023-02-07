@@ -9,33 +9,14 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:pinput/pinput.dart';
 
 import '../../global_widget/custom_otp.dart';
-import '../../routes/app_routes.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({super.key});
-  // // static final pinController = TextEditingController();
-  // static final focusNode = FocusNode();
-  // // final formKey = GlobalKey<FormState>();
-  static final SignUpController controller = Get.find<SignUpController>();
-  // static final focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-  // static final fillColor = Color.fromRGBO(243, 246, 249, 0);
-  // static final borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
-  // static final defaultPinTheme = PinTheme(
-  //   width: 56,
-  //   height: 56,
-  //   textStyle: const TextStyle(
-  //     fontSize: 22,
-  //     color: Color.fromRGBO(30, 60, 87, 1),
-  //   ),
-  //   decoration: BoxDecoration(
-  //     borderRadius: BorderRadius.circular(19),
-  //     border: Border.all(color: borderColor),
-  //   ),
-  // );
+  static final SignUpController controller = Get.find<SignUpController>();
+
   List<Widget> steps = [
     ConfirmEmailPassword(),
     EnterPhoneNumber(),
@@ -87,6 +68,16 @@ class SignUp extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 40,
+                ),
+                GetBuilder<SignUpController>(
+                  builder: (_) => controller.isSigningUp
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Container(),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 CustomButton(
                     title: "Continue",
