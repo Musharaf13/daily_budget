@@ -67,6 +67,14 @@ class Login extends GetView<LoginController> {
                 SizedBox(
                   height: 5,
                 ),
+                TextButton(
+                    onPressed: () {
+                      Get.toNamed(Routes.forgetPasswordScreen);
+                    },
+                    child: Text("Forget Password?")),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

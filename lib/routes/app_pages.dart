@@ -1,3 +1,5 @@
+import 'package:daily_budget/screens/forget_password/forget_password.dart';
+import 'package:daily_budget/screens/forget_password/forget_password_binding.dart';
 import 'package:daily_budget/screens/login/login_binding.dart';
 import 'package:daily_budget/screens/sign_up/sign_up.dart';
 import 'package:daily_budget/screens/sign_up/sign_up_binding.dart';
@@ -24,6 +26,10 @@ abstract class AppPages {
     GetPage(
         name: Routes.signUpScreen,
         page: () => SignUp(),
-        binding: SignUpBinding())
+        binding: SignUpBinding()),
+    GetPage(
+        name: Routes.forgetPasswordScreen,
+        page: () => ForgetPassword(),
+        binding: ForgetPasswordBinding())
   ];
 }

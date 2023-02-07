@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:daily_budget/screens/sign_up/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/phone_number.dart';
+
+import '../../routes/app_routes.dart';
 
 class SignUpController extends GetxController {
   final GlobalKey<FormState> emailPasswordFormkey = GlobalKey<FormState>();
@@ -14,7 +18,7 @@ class SignUpController extends GetxController {
       TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
-  late String receivedCode;
+  String receivedCode = "";
 
   int _selectedStep = 0;
   int get selectedStep => _selectedStep;
@@ -22,6 +26,15 @@ class SignUpController extends GetxController {
     _selectedStep = value;
     update();
   }
+
+  // List<Widget> steps = [
+  //   ConfirmEmailPassword(),
+  //   EnterPhoneNumber(),
+  //   AddOTP(
+  //     otpController: otpController,
+  //   ),
+  //   WelcomeStep()
+  // ];
 
   bool get validateEmailPass {
     switch (selectedStep) {
@@ -55,4 +68,40 @@ class SignUpController extends GetxController {
 
   FutureOr<String?> phoneNumberValidator(PhoneNumber? value) async =>
       value!.number.length < 13 ? "Invalid Phone number" : null;
+
+  void validateForm() {
+    switch (selectedStep) {
+      case 0:
+        if (emailPasswordFormkey.currentState!.validate())
+          selectedStep = selectedStep + 1;
+        break;
+      case 1:
+        if (phoneFormKey.currentState!.validate()) {
+          generateOTP();
+          selectedStep = selectedStep + 1;
+        }
+        break;
+      case 2:
+        if (otpFormKey.currentState!.validate())
+          selectedStep = selectedStep + 1;
+        break;
+      default:
+        Get.offAllNamed(Routes.navigationScreen);
+    }
+
+    // if (validateEmailPass) {
+    //   if (selectedStep < 3) {
+    //     debugPrint("current step: ${selectedStep}");
+    //     if (selectedStep == 1) {
+    //       generateOTP();
+    //       selectedStep = selectedStep + 1;
+    //     } else if (selectedStep == 2 && otpController.text != receivedCode) {
+    //     } else {
+    //       selectedStep = selectedStep + 1;
+    //     }
+    //   } else {
+    //     selectedStep = 0;
+    //   }
+    // }
+  }
 }

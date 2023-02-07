@@ -4,48 +4,51 @@ import 'package:daily_budget/global_widget/custom_button.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:daily_budget/screens/sign_up/sign_up_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../global_widget/custom_otp.dart';
 import '../../routes/app_routes.dart';
 
-class SignUp extends GetView<SignUpController> {
+class SignUp extends StatelessWidget {
   SignUp({super.key});
-  // static final pinController = TextEditingController();
-  static final focusNode = FocusNode();
-  // final formKey = GlobalKey<FormState>();
+  // // static final pinController = TextEditingController();
+  // static final focusNode = FocusNode();
+  // // final formKey = GlobalKey<FormState>();
+  static final SignUpController controller = Get.find<SignUpController>();
+  // static final focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
+  // static final fillColor = Color.fromRGBO(243, 246, 249, 0);
+  // static final borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
-  static final focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-  static final fillColor = Color.fromRGBO(243, 246, 249, 0);
-  static final borderColor = Color.fromRGBO(23, 171, 144, 0.4);
-
-  static final defaultPinTheme = PinTheme(
-    width: 56,
-    height: 56,
-    textStyle: const TextStyle(
-      fontSize: 22,
-      color: Color.fromRGBO(30, 60, 87, 1),
-    ),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(19),
-      border: Border.all(color: borderColor),
-    ),
-  );
-
-  final List<Widget> steps = [
+  // static final defaultPinTheme = PinTheme(
+  //   width: 56,
+  //   height: 56,
+  //   textStyle: const TextStyle(
+  //     fontSize: 22,
+  //     color: Color.fromRGBO(30, 60, 87, 1),
+  //   ),
+  //   decoration: BoxDecoration(
+  //     borderRadius: BorderRadius.circular(19),
+  //     border: Border.all(color: borderColor),
+  //   ),
+  // );
+  List<Widget> steps = [
     ConfirmEmailPassword(),
     EnterPhoneNumber(),
-    AddOTP(
-        // pinController: controller.otpController,
-        focusNode: focusNode,
-        defaultPinTheme: defaultPinTheme,
-        focusedBorderColor: focusedBorderColor,
-        fillColor: fillColor),
+    Form(
+      key: controller.otpFormKey,
+      child: AddOTP(
+          validator: (value) =>
+              value != controller.receivedCode ? "Invalid" : null),
+    ),
     WelcomeStep()
   ];
+
+  // final List<Widget> steps = ;
 
   @override
   Widget build(BuildContext context) {
@@ -88,26 +91,7 @@ class SignUp extends GetView<SignUpController> {
                 CustomButton(
                     title: "Continue",
                     onTap: () {
-                      if (controller.validateEmailPass) {
-                        if (controller.selectedStep < 3) {
-                          debugPrint(
-                              "current step: ${controller.selectedStep}");
-                          if (controller.selectedStep == 1) {
-                            controller.generateOTP();
-                            controller.selectedStep =
-                                controller.selectedStep + 1;
-                          } else if (controller.selectedStep == 2 &&
-                              controller.otpController.text !=
-                                  controller.receivedCode) {
-                          } else {
-                            controller.selectedStep =
-                                controller.selectedStep + 1;
-                          }
-                        } else {
-                          Get.offAllNamed(Routes.navigationScreen);
-                          controller.selectedStep = 0;
-                        }
-                      }
+                      controller.validateForm();
                     })
               ],
             ),
@@ -138,94 +122,6 @@ class WelcomeStep extends StatelessWidget {
           height: 30,
         ),
         Image.asset("assets/images/savings.webp")
-      ],
-    );
-  }
-}
-
-class AddOTP extends GetView<SignUpController> {
-  const AddOTP({
-    Key? key,
-    required this.focusNode,
-    required this.defaultPinTheme,
-    required this.focusedBorderColor,
-    required this.fillColor,
-  }) : super(key: key);
-
-  final FocusNode focusNode;
-  final PinTheme defaultPinTheme;
-  final Color focusedBorderColor;
-  final Color fillColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: 50),
-        Text(
-          "Just There",
-          style: heading1TextStyle,
-        ),
-        SizedBox(
-          height: 100,
-        ),
-        Form(
-          key: controller.otpFormKey,
-          child: Pinput(
-            controller: controller.otpController,
-            focusNode: focusNode,
-            androidSmsAutofillMethod:
-                AndroidSmsAutofillMethod.smsUserConsentApi,
-            listenForMultipleSmsOnAndroid: true,
-            defaultPinTheme: defaultPinTheme,
-            validator: (value) {
-              debugPrint("value: ${value}");
-              debugPrint("receivedCode: ${controller.receivedCode}");
-              debugPrint("${value == controller.receivedCode}");
-              return value == controller.receivedCode
-                  ? null
-                  : 'Pin is incorrect';
-            },
-            onClipboardFound: (value) {
-              debugPrint('onClipboardFound: $value');
-              controller.otpController.setText(value);
-            },
-            hapticFeedbackType: HapticFeedbackType.lightImpact,
-            onCompleted: (pin) {
-              debugPrint('onCompleted: $pin');
-            },
-            onChanged: (value) {
-              debugPrint('onChanged: $value');
-            },
-            cursor: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 9),
-                  width: 22,
-                  height: 1,
-                  color: focusedBorderColor,
-                ),
-              ],
-            ),
-            focusedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: focusedBorderColor),
-              ),
-            ),
-            submittedPinTheme: defaultPinTheme.copyWith(
-              decoration: defaultPinTheme.decoration!.copyWith(
-                color: fillColor,
-                borderRadius: BorderRadius.circular(19),
-                border: Border.all(color: focusedBorderColor),
-              ),
-            ),
-            errorPinTheme: defaultPinTheme.copyBorderWith(
-              border: Border.all(color: Colors.redAccent),
-            ),
-          ),
-        ),
       ],
     );
   }
