@@ -108,6 +108,7 @@ class SignUpController extends GetxController {
         break;
       default:
         Get.offAllNamed(Routes.navigationScreen);
+        selectedStep = 0;
     }
 
     // if (validateEmailPass) {

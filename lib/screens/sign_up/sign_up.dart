@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:daily_budget/constants/colors.dart';
 import 'package:daily_budget/constants/typography.dart';
 import 'package:daily_budget/global_widget/custom_button.dart';
@@ -9,8 +11,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:intl_phone_field/phone_number.dart';
 
 import '../../global_widget/custom_otp.dart';
+import '../../global_widget/phone_text_field.dart';
 
 class SignUp extends StatelessWidget {
   SignUp({super.key});
@@ -19,13 +23,15 @@ class SignUp extends StatelessWidget {
 
   List<Widget> steps = [
     ConfirmEmailPassword(),
-    EnterPhoneNumber(),
-    Form(
-      key: controller.otpFormKey,
-      child: AddOTP(
-          validator: (value) =>
-              value != controller.receivedCode ? "Invalid" : null),
+    EnterPhoneNumber(
+      formKey: controller.phoneFormKey,
+      controller: controller.phoneNumberController,
+      validation: controller.phoneNumberValidator,
     ),
+    AddOTP(
+        formKey: controller.otpFormKey,
+        validator: (value) =>
+            value != controller.receivedCode ? "Invalid" : null),
     WelcomeStep()
   ];
 
@@ -113,51 +119,6 @@ class WelcomeStep extends StatelessWidget {
           height: 30,
         ),
         Image.asset("assets/images/savings.webp")
-      ],
-    );
-  }
-}
-
-class EnterPhoneNumber extends GetView<SignUpController> {
-  const EnterPhoneNumber({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 50,
-        ),
-        Text(
-          "Almost There",
-          style: heading1TextStyle,
-        ),
-        SizedBox(
-          height: 80,
-        ),
-        Form(
-          key: controller.phoneFormKey,
-          child: IntlPhoneField(
-            controller: controller.phoneNumberController,
-            autovalidateMode: AutovalidateMode.disabled,
-            validator: controller.phoneNumberValidator,
-            decoration: InputDecoration(
-              labelText: 'Phone Number',
-              border: OutlineInputBorder(
-                borderSide: BorderSide(),
-              ),
-            ),
-            initialCountryCode: 'PK',
-            onChanged: (phone) {
-              print(phone.completeNumber);
-            },
-          ),
-        ),
-        SizedBox(
-          height: 50,
-        )
       ],
     );
   }

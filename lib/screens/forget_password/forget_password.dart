@@ -1,16 +1,22 @@
 import 'package:daily_budget/screens/forget_password/forget_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../constants/colors.dart';
 import '../../global_widget/custom_button.dart';
+import '../../global_widget/custom_otp.dart';
+import '../../global_widget/phone_text_field.dart';
 
-class ForgetPassword extends GetView<ForgetPasswordController> {
-  const ForgetPassword({super.key});
+class ForgetPassword extends StatelessWidget {
+  ForgetPassword({super.key});
 
   // static final focusNode = FocusNode();
   // // final formKey = GlobalKey<FormState>();
+
+  static ForgetPasswordController controller =
+      Get.find<ForgetPasswordController>();
 
   // static final focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
   // static final fillColor = Color.fromRGBO(243, 246, 249, 0);
@@ -29,15 +35,16 @@ class ForgetPassword extends GetView<ForgetPasswordController> {
   //   ),
   // );
 
-  static final List<Widget> steps = [
-    // EnterPhoneNumber(),
-    // AddOTP(
-    //     // pinController: controller.otpController,
-    //     focusNode: focusNode,
-    //     defaultPinTheme: defaultPinTheme,
-    //     focusedBorderColor: focusedBorderColor,
-    //     fillColor: fillColor),
-    // WelcomeStep()
+  final List<Widget> steps = [
+    EnterPhoneNumber(
+      formKey: controller.phoneFormKey,
+      controller: controller.phoneNumberController,
+      validation: controller.phoneNumberValidator,
+    ),
+     AddOTP(
+        formKey: controller.otpFormKey,
+        validator: (value) =>
+            value != controller.receivedCode ? "Invalid" : null),
   ];
 
   @override

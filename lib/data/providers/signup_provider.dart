@@ -18,8 +18,8 @@ class SignupProvider {
       required String phoneNumber}) async {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    debugPrint("http://192.168.0.15:4000/user/signup");
-    Response response = await dio.post("http://192.168.0.15:4000/user/signup",
+    debugPrint("http://192.168.0.22:4000/user/signup");
+    Response response = await dio.post("http://192.168.0.22:4000/user/signup",
         data: {
           "email": email,
           "password": password,
