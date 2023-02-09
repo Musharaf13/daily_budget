@@ -8,6 +8,7 @@ import '../../constants/colors.dart';
 import '../../global_widget/custom_button.dart';
 import '../../global_widget/custom_otp.dart';
 import '../../global_widget/phone_text_field.dart';
+import '../sign_up/sign_up.dart';
 
 class ForgetPassword extends StatelessWidget {
   ForgetPassword({super.key});
@@ -41,10 +42,11 @@ class ForgetPassword extends StatelessWidget {
       controller: controller.phoneNumberController,
       validation: controller.phoneNumberValidator,
     ),
-     AddOTP(
+    AddOTP(
         formKey: controller.otpFormKey,
         validator: (value) =>
             value != controller.receivedCode ? "Invalid" : null),
+    WelcomeStep()
   ];
 
   @override
@@ -66,7 +68,6 @@ class ForgetPassword extends StatelessWidget {
                     enableNextPreviousButtons: false,
                     activeStep: controller.selectedStep,
                     icons: [
-                      Icon(Icons.app_registration_rounded),
                       Icon(Icons.phone),
                       Icon(Icons.pin),
                       Icon(Icons.done_outline_sharp),
@@ -88,22 +89,23 @@ class ForgetPassword extends StatelessWidget {
                 CustomButton(
                     title: "Continue",
                     onTap: () {
-                      if (controller.selectedStep < 3) {
-                        debugPrint("current step: ${controller.selectedStep}");
-                        if (controller.selectedStep == 1) {
-                          controller.generateOTP();
-                          controller.selectedStep = controller.selectedStep + 1;
-                        } else if (controller.selectedStep == 2 &&
-                            controller.otpController.text !=
-                                controller.receivedCode) {
-                        } else {
-                          controller.selectedStep = controller.selectedStep + 1;
-                        }
-                        //  else {
-                        //   Get.offAllNamed(Routes.navigationScreen);
-                        //   controller.selectedStep = 0;
-                        // }
-                      }
+                      controller.validateForm();
+                      // if (controller.selectedStep < 3) {
+                      //   debugPrint("current step: ${controller.selectedStep}");
+                      //   if (controller.selectedStep == 1) {
+                      //     controller.generateOTP();
+                      //     controller.selectedStep = controller.selectedStep + 1;
+                      //   } else if (controller.selectedStep == 2 &&
+                      //       controller.otpController.text !=
+                      //           controller.receivedCode) {
+                      //   } else {
+                      //     controller.selectedStep = controller.selectedStep + 1;
+                      //   }
+                      //   //  else {
+                      //   //   Get.offAllNamed(Routes.navigationScreen);
+                      //   //   controller.selectedStep = 0;
+                      //   // }
+                      // }
                     })
               ],
             ),
