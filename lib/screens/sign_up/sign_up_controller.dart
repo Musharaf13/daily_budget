@@ -36,25 +36,6 @@ class SignUpController extends GetxController {
     update();
   }
 
-  // List<Widget> steps = [
-  //   ConfirmEmailPassword(),
-  //   EnterPhoneNumber(),
-  //   AddOTP(
-  //     otpController: otpController,
-  //   ),
-  //   WelcomeStep()
-  // ];
-
-  bool get validateEmailPass {
-    switch (selectedStep) {
-      case 0:
-        return emailPasswordFormkey.currentState!.validate();
-      case 1:
-        return phoneFormKey.currentState!.validate();
-      default:
-        return true;
-    }
-  }
 
   void generateOTP() {
     var random = Random();

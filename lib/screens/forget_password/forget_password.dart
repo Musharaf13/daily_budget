@@ -5,8 +5,10 @@ import 'package:get/instance_manager.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../constants/colors.dart';
+import '../../constants/typography.dart';
 import '../../global_widget/custom_button.dart';
 import '../../global_widget/custom_otp.dart';
+import '../../global_widget/custom_text_field.dart';
 import '../../global_widget/phone_text_field.dart';
 import '../sign_up/sign_up.dart';
 
@@ -46,6 +48,7 @@ class ForgetPassword extends StatelessWidget {
         formKey: controller.otpFormKey,
         validator: (value) =>
             value != controller.receivedCode ? "Invalid" : null),
+    NewPassword(),
     WelcomeStep()
   ];
 
@@ -70,6 +73,7 @@ class ForgetPassword extends StatelessWidget {
                     icons: [
                       Icon(Icons.phone),
                       Icon(Icons.pin),
+                      Icon(Icons.password),
                       Icon(Icons.done_outline_sharp),
                     ],
                     onStepReached: (value) {
@@ -90,27 +94,70 @@ class ForgetPassword extends StatelessWidget {
                     title: "Continue",
                     onTap: () {
                       controller.validateForm();
-                      // if (controller.selectedStep < 3) {
-                      //   debugPrint("current step: ${controller.selectedStep}");
-                      //   if (controller.selectedStep == 1) {
-                      //     controller.generateOTP();
-                      //     controller.selectedStep = controller.selectedStep + 1;
-                      //   } else if (controller.selectedStep == 2 &&
-                      //       controller.otpController.text !=
-                      //           controller.receivedCode) {
-                      //   } else {
-                      //     controller.selectedStep = controller.selectedStep + 1;
-                      //   }
-                      //   //  else {
-                      //   //   Get.offAllNamed(Routes.navigationScreen);
-                      //   //   controller.selectedStep = 0;
-                      //   // }
-                      // }
                     })
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class NewPassword extends GetView<ForgetPasswordController> {
+  const NewPassword({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: controller.newPasswordFormKey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            "On Boarding You",
+            style: heading1TextStyle,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            controller: controller.passwordController,
+            hintText: "Enter Password",
+            showHelperText: true,
+            prefix: Icon(Icons.password),
+            obscureText: true,
+            validator: controller.passwordValidator,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CustomTextField(
+            controller: controller.confirmPasswordController,
+            hintText: "Confirm Password",
+            showHelperText: true,
+            prefix: Icon(Icons.confirmation_number),
+            obscureText: true,
+            validator: controller.confirmPasswordValidator,
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          GetBuilder<ForgetPasswordController>(
+            builder: (_) {
+              return Container(
+                child: controller.isUpdatingPassword
+                    ? CircularProgressIndicator()
+                    : Container(),
+              );
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
       ),
     );
   }

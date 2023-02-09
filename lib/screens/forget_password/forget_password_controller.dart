@@ -6,19 +6,33 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
+import '../../data/providers/forget_password_provider.dart';
 import '../../routes/app_routes.dart';
 
 class ForgetPasswordController extends GetxController {
+  final ForgetPasswordProvider provider = ForgetPasswordProvider();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController otpController = TextEditingController();
   final GlobalKey<FormState> phoneFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> otpFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> newPasswordFormKey = GlobalKey<FormState>();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
   late String receivedCode;
 
   int _selectedStep = 0;
   int get selectedStep => _selectedStep;
   set selectedStep(value) {
     _selectedStep = value;
+    update();
+  }
+
+  bool _isUpdatingPassword = false;
+  bool get isUpdatingPassword => _isUpdatingPassword;
+  set isUpdatingPassword(value) {
+    _isUpdatingPassword = value;
     update();
   }
 
@@ -42,7 +56,13 @@ class ForgetPasswordController extends GetxController {
         break;
       case 1:
         if (otpFormKey.currentState!.validate()) {
+          selectedStep = selectedStep + 1;
+        }
+        break;
+      case 2:
+        if (newPasswordFormKey.currentState!.validate()) {
           // await signup();
+          await updatePassword();
           selectedStep = selectedStep + 1;
         }
         break;
@@ -50,5 +70,19 @@ class ForgetPasswordController extends GetxController {
         Get.offAllNamed(Routes.navigationScreen);
         selectedStep = 0;
     }
+  }
+
+  String? passwordValidator(String? value) =>
+      value!.length < 8 ? "password should be at least 8 characters" : null;
+
+  String? confirmPasswordValidator(String? value) =>
+      value! != passwordController.text ? "password does nt match" : null;
+
+  Future updatePassword() async {
+    isUpdatingPassword = true;
+    String phoneNumber = "92" + phoneNumberController.text;
+    await provider.updatePassword(
+        phoneNumber: phoneNumber, password: passwordController.text);
+    isUpdatingPassword = false;
   }
 }
