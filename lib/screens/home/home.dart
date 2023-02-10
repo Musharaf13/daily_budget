@@ -145,6 +145,7 @@ class AddExpenseDialogue extends GetView<HomeController> {
           CustomButton(
               title: "Add",
               onTap: () {
+                controller.addExpense();
                 Get.back();
               })
         ],

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-class LoginProvider {
+class HomeProvider {
   String baseUrl = 'http://192.168.0.19';
   String part2 = ':4000';
 
@@ -10,19 +10,24 @@ class LoginProvider {
   Dio dio = new Dio();
   // Response response = Response(requestOptions: RequestOptions(path: ""));
 
-  Future<dynamic> login(
-      {required String email, required String password}) async {
+  Future<dynamic> addExpense({
+    required categoryId,
+    required double amount,
+    required String description,
+  }) async {
     // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
+
     debugPrint("http://192.168.0.29:4000/user/login");
-    Response response = await dio.post("http://192.168.0.29:4000/user/login",
-        data: {"email": email, "password": password});
+    Response response =
+        await dio.post("http://192.168.0.29:4000/expense/add", data: {
+      "categoryId": categoryId,
+      "amount": amount,
+      "description": description,
+      "userId": 2
+    });
     debugPrint("login response: ${response.data}");
 
     return response.data;
-  }
-
-  Future<dynamic> sendCode() async {
-    return true;
   }
 }
