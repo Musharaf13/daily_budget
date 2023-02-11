@@ -22,7 +22,8 @@ class CustomTextField extends StatefulWidget {
     this.prefix,
     this.onChanged,
     this.maxLines,
-    this.showHelperText=false,
+    this.showHelperText = false,
+    this.allowDigitsOnly = false,
     Key? key,
   }) : super(key: key);
   final TextEditingController controller;
@@ -43,6 +44,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLines;
   final void Function()? onTap;
   final bool showHelperText;
+  final bool allowDigitsOnly;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -68,8 +70,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
       validator: widget.validator,
       controller: widget.controller,
       obscureText: _passwordVisible,
-      keyboardType: widget.keyboardType,
-      inputFormatters: widget.inputFormatters,
+      keyboardType:
+          widget.allowDigitsOnly ? TextInputType.number : widget.keyboardType,
+      inputFormatters: widget.allowDigitsOnly
+          ? [FilteringTextInputFormatter.digitsOnly]
+          : widget.inputFormatters,
       // style: widget.style,
       readOnly: widget.isEnable,
       onChanged: widget.onChanged,

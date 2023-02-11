@@ -17,9 +17,9 @@ class ForgetPasswordProvider {
       {required String phoneNumber, required String password}) async {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    debugPrint("http://192.168.0.29:4000/user/updatePassword");
+    debugPrint("http://192.168.0.25:4000/user/updatePassword");
     Response response = await dio.post(
-        "http://192.168.0.29:4000/user/updatePassword",
+        "http://192.168.0.25:4000/user/updatePassword",
         data: {"phone_number": phoneNumber, "new_password": password});
     debugPrint("update Password response: ${response.data}");
 

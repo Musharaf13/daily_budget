@@ -14,8 +14,8 @@ class LoginProvider {
       {required String email, required String password}) async {
     // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    debugPrint("http://192.168.0.29:4000/user/login");
-    Response response = await dio.post("http://192.168.0.29:4000/user/login",
+    debugPrint("http://192.168.0.25:4000/user/login");
+    Response response = await dio.post("http://192.168.0.25:4000/user/login",
         data: {"email": email, "password": password});
     debugPrint("login response: ${response.data}");
 

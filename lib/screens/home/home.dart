@@ -7,6 +7,7 @@ import 'package:daily_budget/global_widget/custom_button.dart';
 import 'package:daily_budget/global_widget/custom_drop_down.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:daily_budget/screens/home/home_controller.dart';
+import 'package:daily_budget/screens/home/widgets/add_expense_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -96,63 +97,6 @@ class Home extends GetView<HomeController> {
   }
 }
 
-class AddExpenseDialogue extends GetView<HomeController> {
-  const AddExpenseDialogue({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Center(
-        child: Text("Add Expenditure"),
-      ),
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomTextField(
-            controller: controller.amountController,
-            hintText: "Expense Amount",
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CustomDropDown(
-            hintText: "Select Category",
-            currentValue: controller.categorySelected,
-            onChanged: (value) {
-              controller.categorySelected = value!;
-            },
-            items: List.generate(
-                3,
-                (index) => DropdownMenuItem(
-                      child: Text(categories[index]),
-                      value: index,
-                    )),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CustomTextField(
-            controller: controller.descriptionController,
-            hintText: "Optional Description",
-            maxLines: 4,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          CustomButton(
-              title: "Add",
-              onTap: () {
-                controller.addExpense();
-                Get.back();
-              })
-        ],
-      ),
-    );
-  }
-}
 
 class PricePoint {
   final double x;
