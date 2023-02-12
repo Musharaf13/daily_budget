@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
+import 'package:scroll_date_picker/scroll_date_picker.dart';
 
 import '../../../constants/constants.dart';
 import '../../../global_widget/custom_button.dart';
@@ -27,6 +28,21 @@ class AddExpenseDialogue extends GetView<HomeController> {
             // crossAxisAlignment: CrossAxisAlignment.stretch,
             // mainAxisSize: MainAxisSize.min,
             children: [
+              Container(
+                height: 65,
+                width: 300,
+                child: ScrollDatePicker(
+                  minimumDate:
+                      DateTime(DateTime.now().year, DateTime.now().month, 1),
+                  maximumDate: DateTime.now(),
+                  options: DatePickerOptions(),
+                  selectedDate: controller.addExpenseDate,
+                  locale: Locale('en'),
+                  onDateTimeChanged: (DateTime value) {
+                    controller.addExpenseDate = value;
+                  },
+                ),
+              ),
               CustomTextField(
                 controller: controller.amountController,
                 hintText: "Expense Amount",

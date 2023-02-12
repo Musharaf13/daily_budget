@@ -134,6 +134,8 @@ class History extends GetView<HistoryController> {
                             (index) {
                               ExpenseHistoryModel expense =
                                   controller.expenseHistory[index];
+                              debugPrint(
+                                  "expense category: ${expense.categoryId}");
                               return Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 5, horizontal: 5),
@@ -142,7 +144,7 @@ class History extends GetView<HistoryController> {
                                       'assets/images/splash_screen.png'),
                                   title: Text("Rs ${expense.amount}"),
                                   trailing: Text(
-                                      "${categories[--expense.categoryId]}"),
+                                      "${categories[expense.categoryId - 1]}"),
                                   subtitle: Text("${expense.description}"),
                                 ),
                               );
