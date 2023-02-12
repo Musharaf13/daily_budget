@@ -8,7 +8,7 @@ class ForgetPasswordProvider {
   String baseUrl = 'http://192.168.0.19';
   String part2 = ':4000';
 
-  String loginPath = '/user/login';
+  String updatePasswordPath = '/user/updatePassword';
 
   Dio dio = new Dio();
   // Response response = Response(requestOptions: RequestOptions(path: ""));
@@ -18,8 +18,7 @@ class ForgetPasswordProvider {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.25:4000/user/updatePassword");
-    Response response = await dio.post(
-        "http://192.168.0.25:4000/user/updatePassword",
+    Response response = await dio.post(kbaseUrl + updatePasswordPath,
         data: {"phone_number": phoneNumber, "new_password": password});
     debugPrint("update Password response: ${response.data}");
 

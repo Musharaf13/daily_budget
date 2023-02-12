@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 
+const String kbaseUrl =
+    "https://daily-budget-backend-75leaugjb-muhammadmusharaf35-gmailcom.vercel.app";
+
 List<String> categories = ["Food", "Travel", "Grocery", "Shopping", "Other"];
 
 Map<String, int> allCategoryIds = {

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../constants/constants.dart';
 import '../../utils/utils.dart';
 
 class SignupProvider {
@@ -19,12 +20,11 @@ class SignupProvider {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.22:4000/user/signup");
-    Response response = await dio.post("http://192.168.0.22:4000/user/signup",
-        data: {
-          "email": email,
-          "password": password,
-          "phone_number": phoneNumber
-        });
+    Response response = await dio.post(kbaseUrl + signupPath, data: {
+      "email": email,
+      "password": password,
+      "phone_number": phoneNumber
+    });
     debugPrint("login response: ${response.data}");
     return response.data;
   }
