@@ -43,10 +43,10 @@ class AddExpenseDialogue extends GetView<HomeController> {
                   controller.categorySelected = value!;
                 },
                 items: List.generate(
-                    3,
+                    categories.length,
                     (index) => DropdownMenuItem(
                           child: Text(categories[index]),
-                          value: index,
+                          value: index + 1,
                         )),
                 validator: controller.expenseCategoryValidator,
               ),

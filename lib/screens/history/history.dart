@@ -11,6 +11,8 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../data/models/expense_history_model.dart';
+
 class History extends GetView<HistoryController> {
   const History({super.key});
 
@@ -34,7 +36,7 @@ class History extends GetView<HistoryController> {
           CustomTextField(
             isEnable: true,
             controller: controller.dateRangeController,
-            hintText: "Select Data Range",
+            hintText: "Select Dae Range",
             prefix: Icon(Icons.calendar_month),
             onTap: () {
               showDialog(
@@ -47,6 +49,7 @@ class History extends GetView<HistoryController> {
                               height: 400,
                               width: 500,
                               child: SfDateRangePicker(
+                                controller: controller.dateController,
                                 onSelectionChanged:
                                     (DateRangePickerSelectionChangedArgs
                                         value) {
@@ -61,6 +64,8 @@ class History extends GetView<HistoryController> {
                                   }
                                   controller.dateRangeController.text =
                                       "${startDate} ${endDate != null ? "to ${endDate}" : ""}";
+                                  // controller.dateController. =
+                                  //     value;
                                 },
                                 selectionMode:
                                     DateRangePickerSelectionMode.range,
@@ -77,6 +82,7 @@ class History extends GetView<HistoryController> {
                             CustomButton(
                                 title: "Okay",
                                 onTap: () {
+                                  controller.fetchExpenseHistory();
                                   Get.back();
                                 })
                           ],
@@ -100,22 +106,50 @@ class History extends GetView<HistoryController> {
               choiceStyle: C2ChipStyle.outlined(),
             ),
           ),
-          MiniExpenditureTitle(title: "Total Expanse", value: "200"),
+          GetBuilder<HistoryController>(
+            builder: (_) => MiniExpenditureTitle(
+                title: "Total Expanse",
+                value:
+                    "${controller.expenseHistory.length > 0 ? controller.expenseHistory[0].amount : "0"}"),
+          ),
           MiniExpenditureTitle(title: "Total Limit", value: "1000"),
-          Flexible(
-            child: ListView(
-                children: List.generate(
-              10,
-              (index) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                child: ListTile(
-                  leading: Image.asset('assets/images/splash_screen.png'),
-                  title: Text("Rs 200"),
-                  trailing: Text("Food"),
-                  subtitle: Text("Pizza at Chezioous"),
-                ),
-              ),
-            )),
+          GetBuilder<HistoryController>(
+            initState: (_) {
+              controller.fetchExpenseHistory();
+            },
+            builder: (_) {
+              return Flexible(
+                child: controller.isExpenseHistoryBeingFetched
+                    ? CircularProgressIndicator()
+                    : controller.expenseHistory.length == 0
+                        ? Center(
+                            child: Text(
+                              'Expense History Not Available',
+                              style: headlineTextStyle,
+                            ),
+                          )
+                        : ListView(
+                            children: List.generate(
+                            controller.expenseHistory.length,
+                            (index) {
+                              ExpenseHistoryModel expense =
+                                  controller.expenseHistory[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 5),
+                                child: ListTile(
+                                  leading: Image.asset(
+                                      'assets/images/splash_screen.png'),
+                                  title: Text("Rs ${expense.amount}"),
+                                  trailing: Text(
+                                      "${categories[--expense.categoryId]}"),
+                                  subtitle: Text("${expense.description}"),
+                                ),
+                              );
+                            },
+                          )),
+              );
+            },
           ),
           SizedBox(
             height: 10,

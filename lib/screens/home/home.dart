@@ -1,18 +1,14 @@
 import 'dart:math';
-
 import 'package:daily_budget/constants/colors.dart';
-import 'package:daily_budget/constants/constants.dart';
 import 'package:daily_budget/constants/typography.dart';
+import 'package:daily_budget/data/models/expense_analytics_model.dart';
 import 'package:daily_budget/global_widget/custom_button.dart';
-import 'package:daily_budget/global_widget/custom_drop_down.dart';
-import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:daily_budget/screens/home/home_controller.dart';
 import 'package:daily_budget/screens/home/widgets/add_expense_widget.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/route_manager.dart';
-
+import 'package:get/instance_manager.dart';
 import '../../global_widget/mini_expenditure_tile.dart';
 
 class Home extends GetView<HomeController> {
@@ -38,65 +34,115 @@ class Home extends GetView<HomeController> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: Text(
-                    "Today's Expenditure",
-                    style: heading1TextStyle,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text("Rs. 100", style: heading1TextStyle),
-                SizedBox(
-                  height: 10,
-                ),
-                MiniExpenditureTitle(title: "Today's Limit", value: "200"),
-                MiniExpenditureTitle(
-                    title: "This Months Expenditure", value: "23000"),
-                MiniExpenditureTitle(
-                    title: "This Month's Total Limit", value: "25000"),
-                SizedBox(
-                  height: 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AspectRatio(
-                    aspectRatio: 1.3,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups: _chartGroups(),
-                        borderData: FlBorderData(border: Border.all()),
-                        gridData: FlGridData(show: false),
-                        titlesData: FlTitlesData(
-                          bottomTitles: AxisTitles(sideTitles: _bottomTitles),
-                          leftTitles: AxisTitles(sideTitles: _leftTile),
-                          topTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          rightTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: Container(
+              child: GetBuilder<HomeController>(
+            // init: ,
+            initState: ((state) {
+              debugPrint("Init state  caled");
+              controller.fetchExpenseAnalytics();
+            }),
+            builder: (_) {
+              return controller.isExpenseAnalytricsBeingFetched
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : controller.expenseAnalyticsList.isEmpty
+                      ? Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 200,
+                              ),
+                              Text(
+                                "No Data Here",
+                                style: heading1TextStyle,
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              CustomButton(
+                                  title: "Add Expense",
+                                  onTap: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (builder) {
+                                          // Add Expense Controller is also handled by same home controllers
+                                          return AddExpenseDialogue();
+                                        });
+                                  })
+                            ],
+                          ),
+                        )
+                      : SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Center(
+                                child: Text(
+                                  "Today's Expenditure",
+                                  style: heading1TextStyle,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text("Rs. 100", style: heading1TextStyle),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              MiniExpenditureTitle(
+                                  title: "Today's Limit", value: "200"),
+                              MiniExpenditureTitle(
+                                  title: "This Months Expenditure",
+                                  value: "23000"),
+                              MiniExpenditureTitle(
+                                  title: "This Month's Total Limit",
+                                  value: "25000"),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: AspectRatio(
+                                  aspectRatio: 1.3,
+                                  child: BarChart(
+                                    BarChartData(
+                                      barGroups: _chartGroups(),
+                                      borderData:
+                                          FlBorderData(border: Border.all()),
+                                      gridData: FlGridData(show: false),
+                                      titlesData: FlTitlesData(
+                                        bottomTitles: AxisTitles(
+                                            sideTitles: _bottomTitles),
+                                        leftTitles:
+                                            AxisTitles(sideTitles: _leftTile),
+                                        topTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                        rightTitles: AxisTitles(
+                                            sideTitles:
+                                                SideTitles(showTitles: false)),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+            },
+          )),
         ),
       ),
     );
   }
 }
-
 
 class PricePoint {
   final double x;
@@ -119,11 +165,20 @@ List<PricePoint> get pricePoints {
 List<BarChartGroupData> _chartGroups() {
   final List<BarChartGroupData> points = [];
   final Random random = Random();
+  final List<ExpenseAnalyticsModel> data =
+      Get.find<HomeController>().expenseAnalyticsList;
 
-  for (int i = 1; i <= 30; i++) {
-    points.add(BarChartGroupData(
-        x: i, barRods: [BarChartRodData(toY: random.nextDouble() * 100)]));
-  }
+  data.forEach((item) {
+    points.add(BarChartGroupData(x: int.parse(item.date), barRods:
+        // i == 22
+        //     ? [BarChartRodData(toY: 400)]
+        // :
+        [BarChartRodData(toY: double.parse(item.amount))]));
+  });
+
+  // for (int i = data; i <= 30; i++) {
+  //
+  // }
   return points;
 }
 
@@ -141,6 +196,7 @@ SideTitles get _bottomTitles => SideTitles(
         );
       },
     );
+    
 SideTitles get _leftTile => SideTitles(
       showTitles: true,
       getTitlesWidget: (value, meta) {

@@ -1,3 +1,4 @@
+import 'package:daily_budget/data/models/expense_analytics_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +12,15 @@ class HomeController extends GetxController {
   int categorySelected = -1;
   final GlobalKey<FormState> addExpenseFormKey = GlobalKey<FormState>();
 
+  bool _isExpenseAnalytricsBeingFetched = false;
+  bool get isExpenseAnalytricsBeingFetched => _isExpenseAnalytricsBeingFetched;
+  set isExpenseAnalytricsBeingFetched(bool value) {
+    _isExpenseAnalytricsBeingFetched = value;
+    update();
+  }
+
+  List<ExpenseAnalyticsModel> expenseAnalyticsList = [];
+
   void addExpense() async {
     if (addExpenseFormKey.currentState!.validate()) {
       isAddingExpense = true;
@@ -21,7 +31,14 @@ class HomeController extends GetxController {
       Get.back();
       clearFields();
       isAddingExpense = false;
+      fetchExpenseAnalytics();
     }
+  }
+
+  void fetchExpenseAnalytics() async {
+    isExpenseAnalytricsBeingFetched = true;
+    expenseAnalyticsList = await provider.fetchExpenseAnalytics();
+    isExpenseAnalytricsBeingFetched = false;
   }
 
   bool _isAddingExpense = false;

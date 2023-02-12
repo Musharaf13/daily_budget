@@ -2,7 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 
-List<String> categories = ["Food", "Travel", "Grocery", "Shopping"];
+List<String> categories = ["Food", "Travel", "Grocery", "Shopping", "Other"];
+
+Map<String, int> allCategoryIds = {
+  "Food": 1,
+  "Travel": 2,
+  "Grocery": 3,
+  "Shopping": 4,
+  "Other": 5
+};
 
 void showSnackBar(String errorMessage, {int? duration}) {
   Get.snackbar(
