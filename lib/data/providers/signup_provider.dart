@@ -8,7 +8,8 @@ class SignupProvider {
   String baseUrl = 'http://192.168.0.19';
   String part2 = ':4000';
 
-  String signupPath = '/user/signup';
+  final String signupPath = '/user/signup';
+  final String addUpdateMonthlyBudgetPath = "/user/addMonthlyBudget";
 
   Dio dio = new Dio();
   // Response response = Response(requestOptions: RequestOptions(path: ""));
@@ -20,8 +21,7 @@ class SignupProvider {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.65:4000/user/signup");
-    Response response =
-        await dio.post("http://192.168.0.65:4000/user/signup", data: {
+    Response response = await dio.post("$kbaseUrl$signupPath", data: {
       // Response response = await dio.post(kbaseUrl + signupPath, data: {
       "email": email,
       "password": password,
@@ -42,7 +42,7 @@ class SignupProvider {
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.65:4000/user/addMonthlyBudget");
     Response response =
-        await dio.post("http://192.168.0.65:4000/user/addMonthlyBudget", data: {
+        await dio.post(kbaseUrl + addUpdateMonthlyBudgetPath, data: {
       "userId": userId,
       "monthlyBudget": monthlyBudget,
       "dailyBudget": dailyBudget,

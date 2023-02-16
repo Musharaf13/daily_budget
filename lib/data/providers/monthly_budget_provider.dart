@@ -7,7 +7,8 @@ class MonthlyBudgetProvider {
   String baseUrl = 'http://192.168.0.19';
   String part2 = ':4000';
 
-  String loginPath = "/user/login";
+  String fetchMonthlyBudgetPath = "/user/fetchMonthlyBudgetDetails";
+  String addUpdateMonthlyBudgetPath = "/user/addMonthlyBudget";
 
   Dio dio = new Dio();
   // Response response = Response(requestOptions: RequestOptions(path: ""));
@@ -16,9 +17,8 @@ class MonthlyBudgetProvider {
     // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.10:4000/user/fetchMonthlyBudgetDetails");
-    Response response = await dio.get(
-        "http://192.168.0.10:4000/user/fetchMonthlyBudgetDetails",
-        queryParameters: {"userId": 2});
+    Response response = await dio.get("$kbaseUrl$fetchMonthlyBudgetPath",
+        queryParameters: {"userId": box.read("userId")});
     debugPrint("response from Query: ${response.data}");
     return response.data;
   }
@@ -34,7 +34,7 @@ class MonthlyBudgetProvider {
     // debugPrint("${baseUrl}${part2}${loginPath}");
     debugPrint("http://192.168.0.10:4000/user/addMonthlyBudget");
     Response response =
-        await dio.post("http://192.168.0.10:4000/user/addMonthlyBudget", data: {
+        await dio.post("$kbaseUrl$addUpdateMonthlyBudgetPath", data: {
       "userId": userId,
       "monthlyBudget": monthlyBudget,
       "dailyBudget": dailyBudget,

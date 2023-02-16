@@ -21,11 +21,10 @@ class HistoryProvider {
     Response response = await dio.post(kbaseUrl + expensesPath, data: {
       "startDate": startDate,
       "endDate": endDate,
-      "userId": 2,
+      "userId": box.read("userId"),
       "categoryIds": categoryIds
     });
     debugPrint("Fetch History response: ${response.data}");
-
     return expenseHistoryModelFromJson(response.data["data"]);
   }
 }

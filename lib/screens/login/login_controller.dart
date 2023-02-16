@@ -10,7 +10,6 @@ class LoginController extends GetxController {
   final LoginProvider provider = LoginProvider();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
   bool _isUserLogging = false;
   bool get isUserLogging => _isUserLogging;
   set isUserLogging(bool value) {
@@ -28,6 +27,9 @@ class LoginController extends GetxController {
     var result = await provider.login(
         email: emailController.text, password: passwordController.text);
     if (result['status']) {
+      int userId = int.parse(result['data'][0]["id"].toString());
+      debugPrint("userId: ${userId}");
+      box.write("userId", userId);
       Get.offAllNamed(Routes.navigationScreen);
     } else {
       showSnackBar(result['message']);

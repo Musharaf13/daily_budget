@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
+import 'package:get_storage/get_storage.dart';
 
 const String kbaseUrl = "https://daily-budget-backend.vercel.app";
 
 List<String> categories = ["Food", "Travel", "Grocery", "Shopping", "Other"];
+final GetStorage box = GetStorage();
 
 Map<String, int> allCategoryIds = {
   "Food": 1,

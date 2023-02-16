@@ -21,7 +21,7 @@ class ForgetPasswordProvider {
     Response response = await dio.post(kbaseUrl + updatePasswordPath,
         data: {"phone_number": phoneNumber, "new_password": password});
     debugPrint("update Password response: ${response.data}");
-
+    debugPrint("Reesponse from update password: ${response.data}");
     return response.data;
   }
 

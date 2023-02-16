@@ -24,13 +24,12 @@ class HomeProvider {
     // debugPrint("${baseUrl}${part2}${loginPath}");
 
     debugPrint("http://192.168.21::4000/user/login");
-    Response response =
-        await dio.post("http://192.168.0.46:4000/expense/Add", data: {
+    Response response = await dio.post("$kbaseUrl$addExpensePath", data: {
       // Response response = await dio.post(kbaseUrl + addExpensePath, data: {
       "categoryId": categoryId,
       "amount": amount,
       "description": description,
-      "userId": 2,
+      "userId": box.read("userId"),
       "date": date,
     });
     debugPrint("login response: ${response.data}");
@@ -41,10 +40,11 @@ class HomeProvider {
   Future<dynamic> fetchExpenseAnalytics() async {
     // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-
+    int userId = int.parse(box.read("userId").toString());
+    debugPrint("sending UserId: ${userId}");
     debugPrint("http://192.168.32::4000/user/login");
     Response response =
-        await dio.post(kbaseUrl + analyticsPath, data: {"userId": 2});
+        await dio.post(kbaseUrl + analyticsPath, data: {"userId": userId});
     // await dio.post(kbaseUrl + analyticsPath, data: {"userId": 2});
     debugPrint("login response: ${response.data}");
 

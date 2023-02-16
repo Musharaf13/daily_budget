@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
+import '../../constants/constants.dart';
 import '../../data/providers/forget_password_provider.dart';
 import '../../routes/app_routes.dart';
 
@@ -81,8 +82,13 @@ class ForgetPasswordController extends GetxController {
   Future updatePassword() async {
     isUpdatingPassword = true;
     String phoneNumber = "92" + phoneNumberController.text;
-    await provider.updatePassword(
+    var response = await provider.updatePassword(
         phoneNumber: phoneNumber, password: passwordController.text);
+    if (response["status"]) {
+      int userId = int.parse(response["data"][0]["id"].toString());
+      debugPrint("userId received from update password: ${userId}");
+      box.write("userId", userId);
+    }
     isUpdatingPassword = false;
   }
 }

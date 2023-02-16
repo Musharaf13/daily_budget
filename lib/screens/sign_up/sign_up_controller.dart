@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/phone_number.dart';
+import '../../constants/constants.dart';
 import '../../data/providers/signup_provider.dart';
 import '../../routes/app_routes.dart';
 
@@ -80,6 +81,8 @@ class SignUpController extends GetxController {
         phoneNumber: phoneNumber);
     if (result["status"]) {
       userId = result["data"]["id"];
+      debugPrint("userId after signUp: ${userId}");
+      box.write("userId", userId);
     }
     isSigningUp = false;
   }
@@ -87,7 +90,7 @@ class SignUpController extends GetxController {
   Future<void> addBudget() async {
     if (budgetFormKey.currentState!.validate()) {
       await signup();
-      
+
       int dailyBudget = 0;
       int workingDaysBudget = 0;
       int weekendsBudget = 0;
@@ -98,7 +101,6 @@ class SignUpController extends GetxController {
         workingDaysBudget = int.parse(workingDaysController.text);
       if (weekendsController.text.isNotEmpty)
         weekendsBudget = int.parse(weekendsController.text);
-
 
       provider.addBudget(
           monthlyBudget: int.parse(monthlyBudgetController.text),

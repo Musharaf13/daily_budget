@@ -5,6 +5,7 @@ import 'package:daily_budget/data/providers/monthly_budget_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
+import '../../constants/constants.dart';
 import '../../data/models/montthly_budget_details_model.dart';
 
 class MonthlyBudgetController extends GetxController {
@@ -32,7 +33,7 @@ class MonthlyBudgetController extends GetxController {
           monthlyBudgetDetailsModelFromJson(result["data"][0]);
       weekendsController.text = budgetDetails.weekendsBudget;
       workingDaysController.text = budgetDetails.workingDayBudget;
-      dailyBudgetController.text = budgetDetails.workingDayBudget;
+      dailyBudgetController.text = budgetDetails.dailyBudget;
       monthlyBudgetController.text = budgetDetails.monthlyBudget;
     }
     isBudgetProcessing = false;
@@ -56,7 +57,7 @@ class MonthlyBudgetController extends GetxController {
         dailyBudget: dailyBudget,
         workingDaysBudget: workingDaysBudget,
         weekendsBudget: weekendsBudget,
-        userId: 2);
+        userId: box.read("userId"));
 
     isBudgetProcessing = false;
   }
