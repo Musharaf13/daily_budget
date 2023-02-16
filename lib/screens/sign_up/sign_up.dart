@@ -5,6 +5,7 @@ import 'package:daily_budget/constants/typography.dart';
 import 'package:daily_budget/global_widget/custom_button.dart';
 import 'package:daily_budget/global_widget/custom_text_field.dart';
 import 'package:daily_budget/screens/sign_up/sign_up_controller.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -13,6 +14,7 @@ import 'package:im_stepper/stepper.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
+import '../../global_widget/custom_monthly_budget_update.dart';
 import '../../global_widget/custom_otp.dart';
 import '../../global_widget/phone_text_field.dart';
 
@@ -32,7 +34,15 @@ class SignUp extends StatelessWidget {
         formKey: controller.otpFormKey,
         validator: (value) =>
             value != controller.receivedCode ? "Invalid" : null),
-    WelcomeStep()
+    BudgetConfiguration(
+      monthlyBudgetController: controller.monthlyBudgetController,
+      dailyBudgetController: controller.dailyBudgetController,
+      workingDaysBudgetController: controller.workingDaysController,
+      weekendsBudgetController: controller.weekendsController,
+      budgetFormKey: controller.budgetFormKey,
+    ),
+
+    // WelcomeStep()
   ];
 
   // final List<Widget> steps = ;
@@ -98,6 +108,9 @@ class SignUp extends StatelessWidget {
     );
   }
 }
+
+
+
 
 class WelcomeStep extends StatelessWidget {
   const WelcomeStep({

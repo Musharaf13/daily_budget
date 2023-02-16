@@ -1,12 +1,14 @@
 import 'package:daily_budget/screens/forget_password/forget_password.dart';
 import 'package:daily_budget/screens/forget_password/forget_password_binding.dart';
 import 'package:daily_budget/screens/login/login_binding.dart';
+import 'package:daily_budget/screens/monthly_budget/monthly_budget.dart';
 import 'package:daily_budget/screens/sign_up/sign_up.dart';
 import 'package:daily_budget/screens/sign_up/sign_up_binding.dart';
 import 'package:get/route_manager.dart';
 
 import '../screens/home/home.dart';
 import '../screens/login/login.dart';
+import '../screens/monthly_budget/monthly_budget_binding.dart';
 import '../screens/navigation/navigation.dart';
 import '../screens/navigation/navigation_bindinig.dart';
 import 'app_routes.dart';
@@ -30,6 +32,10 @@ abstract class AppPages {
     GetPage(
         name: Routes.forgetPasswordScreen,
         page: () => ForgetPassword(),
-        binding: ForgetPasswordBinding())
+        binding: ForgetPasswordBinding()),
+    GetPage(
+        name: Routes.monthlyBudgetScreen,
+        page: () => MonthlyBudget(),
+        binding: MonthlyBudgetBinding()),
   ];
 }

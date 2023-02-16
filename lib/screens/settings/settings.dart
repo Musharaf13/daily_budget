@@ -1,10 +1,13 @@
 import 'package:daily_budget/constants/typography.dart';
+import 'package:daily_budget/screens/settings/settings_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
 
+import '../../global_widget/custom_monthly_budget_update.dart';
 import '../../routes/app_routes.dart';
 
-class Setting extends StatelessWidget {
+class Setting extends GetView<SettingsController> {
   const Setting({super.key});
 
   @override
@@ -21,8 +24,24 @@ class Setting extends StatelessWidget {
         Flexible(
           child: ListView(
             children: [
+              // ExpansionTile(
+              //   title: Text("Update Monthhly Budget"),
+              //   leading: Icon(Icons.update),
+              //   children: [
+              //     BudgetConfiguration(
+              //       monthlyBudgetController: controller.monthlyBudgetController,
+              //       dailyBudgetController: controller.dailyBudgetController,
+              //       workingDaysBudgetController:
+              //           controller.workingDaysController,
+              //       weekendsBudgetController: controller.weekendsController,
+              //       budgetFormKey: controller.budgetFormKey,
+              //     ),
+              //   ],
+              // ),
               ListTile(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(Routes.monthlyBudgetScreen);
+                },
                 leading: Icon(Icons.settings),
                 title: Text("Edit Limit and Budget"),
               ),

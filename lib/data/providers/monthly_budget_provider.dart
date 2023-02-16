@@ -1,37 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/constants.dart';
 import '../../utils/utils.dart';
 
-class SignupProvider {
+class MonthlyBudgetProvider {
   String baseUrl = 'http://192.168.0.19';
   String part2 = ':4000';
 
-  String signupPath = '/user/signup';
+  String loginPath = "/user/login";
 
   Dio dio = new Dio();
   // Response response = Response(requestOptions: RequestOptions(path: ""));
 
-  Future<dynamic> signup(
-      {required String email,
-      required String password,
-      required String phoneNumber}) async {
-    setupDioOptions(dio);
+  Future<dynamic> fetchMonthlyBudgetDetails() async {
+    // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    debugPrint("http://192.168.0.65:4000/user/signup");
-    Response response =
-        await dio.post("http://192.168.0.65:4000/user/signup", data: {
-      // Response response = await dio.post(kbaseUrl + signupPath, data: {
-      "email": email,
-      "password": password,
-      "phone_number": phoneNumber
-    });
-    debugPrint("login response: ${response.data}");
+    debugPrint("http://192.168.0.10:4000/user/fetchMonthlyBudgetDetails");
+    Response response = await dio.get(
+        "http://192.168.0.10:4000/user/fetchMonthlyBudgetDetails",
+        queryParameters: {"userId": 2});
+    debugPrint("response from Query: ${response.data}");
     return response.data;
   }
 
-  Future<dynamic> addBudget({
+  Future<dynamic> updateBudget({
     required int monthlyBudget,
     required int dailyBudget,
     required int workingDaysBudget,
@@ -40,9 +32,9 @@ class SignupProvider {
   }) async {
     setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    debugPrint("http://192.168.0.65:4000/user/addMonthlyBudget");
+    debugPrint("http://192.168.0.10:4000/user/addMonthlyBudget");
     Response response =
-        await dio.post("http://192.168.0.65:4000/user/addMonthlyBudget", data: {
+        await dio.post("http://192.168.0.10:4000/user/addMonthlyBudget", data: {
       "userId": userId,
       "monthlyBudget": monthlyBudget,
       "dailyBudget": dailyBudget,
