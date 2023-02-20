@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get/route_manager.dart';
 
+import '../../constants/constants.dart';
 import '../../global_widget/custom_monthly_budget_update.dart';
 import '../../routes/app_routes.dart';
 
@@ -75,6 +76,7 @@ class Setting extends GetView<SettingsController> {
         Expanded(child: Container()),
         ListTile(
           onTap: () {
+            box.erase();
             Get.offAllNamed(Routes.loginScreen);
           },
           leading: Icon(Icons.logout),

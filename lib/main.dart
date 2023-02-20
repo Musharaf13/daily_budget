@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get_storage/get_storage.dart';
 
+import 'constants/constants.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
@@ -24,7 +26,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.cyan,
       ),
       getPages: AppPages.pages,
-      initialRoute: Routes.loginScreen,
+      initialRoute:
+          box.hasData("userId") ? Routes.navigationScreen : Routes.loginScreen,
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../models/expense_analytics_model.dart';
+import '../models/montthly_budget_details_model.dart';
 
 class HomeProvider {
   String baseUrl = 'http://192.168.0.49';
@@ -37,17 +38,29 @@ class HomeProvider {
     return response.data;
   }
 
-  Future<dynamic> fetchExpenseAnalytics() async {
+  Future<dynamic> fetchExpenseAnalytics(
+      {required String startDate,
+      required String endDate,
+      required String userId}) async {
     // setupDioOptions(dio);
     // debugPrint("${baseUrl}${part2}${loginPath}");
-    int userId = int.parse(box.read("userId").toString());
-    debugPrint("sending UserId: ${userId}");
-    debugPrint("http://192.168.32::4000/user/login");
-    Response response =
-        await dio.post(kbaseUrl + analyticsPath, data: {"userId": userId});
-    // await dio.post(kbaseUrl + analyticsPath, data: {"userId": 2});
-    debugPrint("login response: ${response.data}");
+    debugPrint(
+        "${{"userId": userId, "startDate": startDate, "endDate": endDate}}");
 
-    return ExpenseAnalyticsModelFromJson(response.data["data"]);
+    debugPrint("sending UserId: ${userId}");
+    debugPrint("http://192.168.72::4000/expense/fetchExpansesAnalysis");
+    // Response response = await dio.post(
+    // "http://192.168.0.72:4000/expense/fetchExpansesAnalysis",
+    Response response = await dio.post(kbaseUrl + analyticsPath,
+        data: {"userId": userId, "startDate": startDate, "endDate": endDate});
+    // await dio.post(kbaseUrl + analyticsPath, data: {"userId": 2});
+    debugPrint("response from expense analytics: ${response.data}");
+    debugPrint("response from expense analytics: ${response.data}");
+    debugPrint("login response: ${response.data}");
+    var result = response.data["data"];
+    return {
+      "expennseData": ExpenseAnalyticsModelFromJson(result["expenseAnalysis"]),
+      "limits": monthlyBudgetDetailsModelFromJson(result["limits"][0])
+    };
   }
 }

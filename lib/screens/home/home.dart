@@ -92,18 +92,20 @@ class Home extends GetView<HomeController> {
                               SizedBox(
                                 height: 5,
                               ),
-                              Text("Rs. 100", style: heading1TextStyle),
+                              Text("Rs. ${controller.todaysExpense}",
+                                  style: heading1TextStyle),
                               SizedBox(
                                 height: 10,
                               ),
                               MiniExpenditureTitle(
-                                  title: "Today's Limit", value: "200"),
+                                  title: "Today's Limit",
+                                  value: "${controller.getTodaysLimit()}"),
                               MiniExpenditureTitle(
                                   title: "This Months Expenditure",
-                                  value: "23000"),
+                                  value: "${controller.thisMonthsExpense}"),
                               MiniExpenditureTitle(
                                   title: "This Month's Total Limit",
-                                  value: "25000"),
+                                  value: "${controller.limits.monthlyBudget}"),
                               SizedBox(
                                 height: 30,
                               ),
@@ -196,7 +198,7 @@ SideTitles get _bottomTitles => SideTitles(
         );
       },
     );
-    
+
 SideTitles get _leftTile => SideTitles(
       showTitles: true,
       getTitlesWidget: (value, meta) {

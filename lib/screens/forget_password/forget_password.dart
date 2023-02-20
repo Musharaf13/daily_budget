@@ -39,10 +39,12 @@ class ForgetPassword extends StatelessWidget {
   // );
 
   final List<Widget> steps = [
-    EnterPhoneNumber(
-      formKey: controller.phoneFormKey,
-      controller: controller.phoneNumberController,
-      validation: controller.phoneNumberValidator,
+    Form(
+      key: controller.phoneFormKey,
+      child: EnterPhoneNumber(
+        controller: controller.phoneNumberController,
+        validation: controller.phoneNumberValidator,
+      ),
     ),
     AddOTP(
         formKey: controller.otpFormKey,

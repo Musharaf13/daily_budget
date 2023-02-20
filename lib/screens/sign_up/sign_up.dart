@@ -24,12 +24,15 @@ class SignUp extends StatelessWidget {
   static final SignUpController controller = Get.find<SignUpController>();
 
   List<Widget> steps = [
-    ConfirmEmailPassword(),
-    EnterPhoneNumber(
-      formKey: controller.phoneFormKey,
-      controller: controller.phoneNumberController,
-      validation: controller.phoneNumberValidator,
+    Form(key: controller.emailPasswordFormkey, child: ConfirmEmailPassword()),
+    Form(
+      key: controller.phoneFormKey,
+      child: EnterPhoneNumber(
+        controller: controller.phoneNumberController,
+        validation: controller.phoneNumberValidator,
+      ),
     ),
+
     AddOTP(
         formKey: controller.otpFormKey,
         validator: (value) =>
@@ -109,9 +112,6 @@ class SignUp extends StatelessWidget {
   }
 }
 
-
-
-
 class WelcomeStep extends StatelessWidget {
   const WelcomeStep({
     Key? key,
@@ -144,55 +144,52 @@ class ConfirmEmailPassword extends GetView<SignUpController> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: controller.emailPasswordFormkey,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 50,
-          ),
-          Text(
-            "On Boarding You",
-            style: heading1TextStyle,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          CustomTextField(
-            controller: controller.emailController,
-            hintText: "Enter Email",
-            showHelperText: true,
-            prefix: Icon(Icons.email),
-            keyboardType: TextInputType.emailAddress,
-            validator: controller.emailValidator,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          CustomTextField(
-            controller: controller.passwordController,
-            hintText: "Enter Password",
-            showHelperText: true,
-            prefix: Icon(Icons.password),
-            obscureText: true,
-            validator: controller.passwordValidator,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          CustomTextField(
-            controller: controller.confirmPasswordController,
-            hintText: "Confirm Password",
-            showHelperText: true,
-            prefix: Icon(Icons.confirmation_number),
-            obscureText: true,
-            validator: controller.confirmPasswordValidator,
-          ),
-          SizedBox(
-            height: 30,
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 50,
+        ),
+        Text(
+          "On Boarding You",
+          style: heading1TextStyle,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        CustomTextField(
+          controller: controller.emailController,
+          hintText: "Enter Email",
+          showHelperText: true,
+          prefix: Icon(Icons.email),
+          keyboardType: TextInputType.emailAddress,
+          validator: controller.emailValidator,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        CustomTextField(
+          controller: controller.passwordController,
+          hintText: "Enter Password",
+          showHelperText: true,
+          prefix: Icon(Icons.password),
+          obscureText: true,
+          validator: controller.passwordValidator,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+        CustomTextField(
+          controller: controller.confirmPasswordController,
+          hintText: "Confirm Password",
+          showHelperText: true,
+          prefix: Icon(Icons.confirmation_number),
+          obscureText: true,
+          validator: controller.confirmPasswordValidator,
+        ),
+        SizedBox(
+          height: 30,
+        ),
+      ],
     );
   }
 }

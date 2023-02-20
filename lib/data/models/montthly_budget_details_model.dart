@@ -13,7 +13,6 @@ class MonthlyBudgetDetailsModel {
     required this.workingDayBudget,
     required this.weekendsBudget,
     required this.dailyBudget,
-    required this.createdAt,
   });
 
   int id;
@@ -22,16 +21,15 @@ class MonthlyBudgetDetailsModel {
   String workingDayBudget;
   String weekendsBudget;
   String dailyBudget;
-  DateTime createdAt;
+  // DateTime createdAt;
 
   factory MonthlyBudgetDetailsModel.fromJson(Map<String, dynamic> json) =>
       MonthlyBudgetDetailsModel(
-        id: json["id"],
-        userId: json["user_id"],
-        monthlyBudget: json["monthly_budget"],
-        workingDayBudget: json["working_day_budget"],
-        weekendsBudget: json["weekends_budget"],
-        dailyBudget: json["daily_budget"],
-        createdAt: DateTime.parse(json["created_at"]),
+        id: json["id"] ?? -1,
+        userId: json["user_id"] ?? -1,
+        monthlyBudget: json["monthly_budget"] ?? 0,
+        workingDayBudget: json["working_day_budget"] ?? 0,
+        weekendsBudget: json["weekends_budget"] ?? 0,
+        dailyBudget: json["daily_budget"] ?? 0,
       );
 }

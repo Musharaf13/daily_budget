@@ -4,6 +4,6 @@ import 'package:get/instance_manager.dart';
 class ForgetPasswordBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(ForgetPasswordController());
+    Get.put(ForgetPasswordController(), permanent: true);
   }
 }
